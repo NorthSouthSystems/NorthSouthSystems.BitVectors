@@ -1,7 +1,21 @@
 ﻿namespace NorthSouthSystems.BitVectors;
 
+#if !NETFRAMEWORK
+using System.Numerics;
+#endif
+
 public class BitOperationsTests
 {
+    [Fact]
+    public void Polyfill()
+    {
+#if NETFRAMEWORK
+        typeof(BitOperations).Namespace.Should().Be("NorthSouthSystems.BitVectors");
+#else
+        typeof(BitOperations).Namespace.Should().Be("System.Numerics");
+#endif
+    }
+
     [Fact]
     public void PopCountUint()
     {
