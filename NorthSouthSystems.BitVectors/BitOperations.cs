@@ -2,8 +2,7 @@
 namespace NorthSouthSystems.BitVectors;
 
 /// <summary>
-/// Provides a method for computing the population (number of bits set to 1) of an
-/// unsigned integer.
+/// Polyfills for BitOperations that are available in .NET but not in .NET Framework (any version) or .NET Standard 2.0.
 /// </summary>
 public static class BitOperations
 {
@@ -19,12 +18,12 @@ public static class BitOperations
     /// </remarks>
     public static int PopCount(uint word)
     {
-        word = word - ((word >> 1) & 0x55555555u);
-        word = (word & 0x33333333u) + ((word >> 2) & 0x33333333u);
-        word = (word + (word >> 4)) & 0x0F0F0F0Fu;
-        word = word + (word >> 8);
-        word = word + (word >> 16);
-        return (int)(word & 0x0000003Fu);
+        word -= (word >> 1) & 0x5555_5555u;
+        word = (word & 0x3333_3333u) + ((word >> 2) & 0x3333_3333u);
+        word = (word + (word >> 4)) & 0x0F0F_0F0Fu;
+        word += word >> 8;
+        word += word >> 16;
+        return (int)(word & 0x0000_003Fu);
     }
 }
 #endif
