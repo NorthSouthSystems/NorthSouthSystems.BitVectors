@@ -15,12 +15,14 @@ public static class BitOperations
     /// </summary>
     /// <remarks>
     /// Originally found at <a href="http://www.hackersdelight.org/HDcode/newCode/pop_arrayHS.c.txt">Hacker's Delight</a>.
+    /// Found again at <a href="https://andrewlock.net/counting-the-leading-zeroes-in-a-binary-number/">Andrew Lock's Blog</a>
+    /// when searching for a LeadingZeroCount polyfill.
     /// </remarks>
     public static int PopCount(uint word)
     {
         word -= (word >> 1) & 0x5555_5555u;
-        word = (word & 0x3333_3333u) + ((word >> 2) & 0x3333_3333u);
-        word = (word + (word >> 4)) & 0x0F0F_0F0Fu;
+        word = ((word >> 2) & 0x3333_3333u) + (word & 0x3333_3333u);
+        word = ((word >> 4) + word) & 0x0F0F_0F0Fu;
         word += word >> 8;
         word += word >> 16;
         return (int)(word & 0x0000_003Fu);
