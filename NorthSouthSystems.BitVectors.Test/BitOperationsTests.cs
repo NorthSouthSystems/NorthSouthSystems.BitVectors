@@ -17,26 +17,62 @@ public class BitOperationsTests
     }
 
     [Fact]
+    public void LeadingZeroCountUint()
+    {
+        int sizeBits = sizeof(uint) * 8;
+
+        for (int shift = 0; shift < sizeBits; shift++)
+        {
+            BitOperations.LeadingZeroCount(1u << shift).Should().Be(sizeBits - 1 - shift);
+            BitOperations.LeadingZeroCount(uint.MaxValue >> shift).Should().Be(shift);
+        }
+    }
+
+    [Fact]
+    public void LeadingZeroCountUlong()
+    {
+        int sizeBits = sizeof(ulong) * 8;
+
+        for (int shift = 0; shift < sizeBits; shift++)
+        {
+            BitOperations.LeadingZeroCount(1ul << shift).Should().Be(sizeBits - 1 - shift);
+            BitOperations.LeadingZeroCount(ulong.MaxValue >> shift).Should().Be(shift);
+        }
+    }
+
+    [Fact]
+    public void LeadingZeroCountTargeted()
+    {
+        BitOperations.LeadingZeroCount(0u).Should().Be(32);
+        BitOperations.LeadingZeroCount(1u).Should().Be(31);
+        BitOperations.LeadingZeroCount(uint.MaxValue).Should().Be(0);
+
+        BitOperations.LeadingZeroCount(0ul).Should().Be(64);
+        BitOperations.LeadingZeroCount(1ul).Should().Be(63);
+        BitOperations.LeadingZeroCount(ulong.MaxValue).Should().Be(0);
+    }
+
+    [Fact]
     public void PopCountUint()
     {
-        int size = sizeof(uint) * 8;
+        int sizeBits = sizeof(uint) * 8;
 
-        for (int shift = 0; shift < size; shift++)
+        for (int shift = 0; shift < sizeBits; shift++)
         {
             BitOperations.PopCount(1u << shift).Should().Be(1);
-            BitOperations.PopCount(uint.MaxValue >> shift).Should().Be(size - shift);
+            BitOperations.PopCount(uint.MaxValue >> shift).Should().Be(sizeBits - shift);
         }
     }
 
     [Fact]
     public void PopCountUlong()
     {
-        int size = sizeof(ulong) * 8;
+        int sizeBits = sizeof(ulong) * 8;
 
-        for (int shift = 0; shift < size; shift++)
+        for (int shift = 0; shift < sizeBits; shift++)
         {
             BitOperations.PopCount(1ul << shift).Should().Be(1);
-            BitOperations.PopCount(ulong.MaxValue >> shift).Should().Be(size - shift);
+            BitOperations.PopCount(ulong.MaxValue >> shift).Should().Be(sizeBits - shift);
         }
     }
 

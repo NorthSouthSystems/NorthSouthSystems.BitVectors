@@ -7,10 +7,55 @@ namespace NorthSouthSystems.BitVectors;
 public static class BitOperations
 {
     /// <summary>
+    /// Compute the number of leading bits set to 0 for an unsigned long value.
+    /// </summary>
+    /// <remarks>
+    /// Originally found at <a href="https://andrewlock.net/counting-the-leading-zeroes-in-a-binary-number/">Andrew Lock's Blog</a>.
+    /// </remarks>
+    public static int LeadingZeroCount(ulong value)
+    {
+        // Smear
+        value |= value >> 1;
+        value |= value >> 2;
+        value |= value >> 4;
+        value |= value >> 8;
+        value |= value >> 16;
+        value |= value >> 32;
+
+        // Count
+        const int ulongSizeBits = sizeof(ulong) * 8;
+
+        return ulongSizeBits - PopCount(value);
+    }
+
+    /// <summary>
+    /// Compute the number of leading bits set to 0 for an unsigned integer value.
+    /// </summary>
+    /// <remarks>
+    /// See LeadingZeroCount(ulong).
+    /// </remarks>
+    public static int LeadingZeroCount(uint value)
+    {
+        // Smear
+        value |= value >> 1;
+        value |= value >> 2;
+        value |= value >> 4;
+        value |= value >> 8;
+        value |= value >> 16;
+
+        // Count
+        const int uintSizeBits = sizeof(uint) * 8;
+
+        return uintSizeBits - PopCount(value);
+    }
+
+    /// <summary>
     /// Compute the number of bits set to 1 for an unsigned long value.
     /// </summary>
     /// <remarks>
-    /// See PopCount(uint) remarks.
+    /// Originally found at http://www.hackersdelight.org, which appears to have fallen into someone else's possesion.
+    /// Found more recently at <a href="https://andrewlock.net/counting-the-leading-zeroes-in-a-binary-number/">Andrew Lock's Blog</a>
+    /// when searching for a LeadingZeroCount polyfill.
     /// </remarks>
     public static int PopCount(ulong value)
     {
@@ -27,9 +72,7 @@ public static class BitOperations
     /// Compute the number of bits set to 1 for an unsigned integer value.
     /// </summary>
     /// <remarks>
-    /// Originally found at http://www.hackersdelight.org, which appears to have fallen into someone else's possesion.
-    /// Found more recently at <a href="https://andrewlock.net/counting-the-leading-zeroes-in-a-binary-number/">Andrew Lock's Blog</a>
-    /// when searching for a LeadingZeroCount polyfill.
+    /// See PopCount(ulong).
     /// </remarks>
     public static int PopCount(uint value)
     {
