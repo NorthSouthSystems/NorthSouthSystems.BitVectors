@@ -50,6 +50,49 @@ public static class BitOperations
     }
 
     /// <summary>
+    /// Compute the number of trailing bits set to 0 for an unsigned long value.
+    /// </summary>
+    /// <remarks>
+    /// See LeadingZeroCount(ulong).
+    /// </remarks>
+    public static int TrailingZeroCount(ulong value)
+    {
+        // Smear
+        value |= value << 1;
+        value |= value << 2;
+        value |= value << 4;
+        value |= value << 8;
+        value |= value << 16;
+        value |= value << 32;
+
+        // Count
+        const int ulongSizeBits = sizeof(ulong) * 8;
+
+        return ulongSizeBits - PopCount(value);
+    }
+
+    /// <summary>
+    /// Compute the number of trailing bits set to 0 for an unsigned integer value.
+    /// </summary>
+    /// <remarks>
+    /// See LeadingZeroCount(ulong).
+    /// </remarks>
+    public static int TrailingZeroCount(uint value)
+    {
+        // Smear
+        value |= value << 1;
+        value |= value << 2;
+        value |= value << 4;
+        value |= value << 8;
+        value |= value << 16;
+
+        // Count
+        const int uintSizeBits = sizeof(uint) * 8;
+
+        return uintSizeBits - PopCount(value);
+    }
+
+    /// <summary>
     /// Compute the number of bits set to 1 for an unsigned long value.
     /// </summary>
     /// <remarks>

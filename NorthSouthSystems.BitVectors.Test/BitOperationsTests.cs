@@ -53,6 +53,42 @@ public class BitOperationsTests
     }
 
     [Fact]
+    public void TrailingZeroCountUint()
+    {
+        int sizeBits = sizeof(uint) * 8;
+
+        for (int shift = 0; shift < sizeBits; shift++)
+        {
+            BitOperations.TrailingZeroCount(0x8000_0000u >> shift).Should().Be(sizeBits - 1 - shift);
+            BitOperations.TrailingZeroCount(uint.MaxValue << shift).Should().Be(shift);
+        }
+    }
+
+    [Fact]
+    public void TrailingZeroCountUlong()
+    {
+        int sizeBits = sizeof(ulong) * 8;
+
+        for (int shift = 0; shift < sizeBits; shift++)
+        {
+            BitOperations.TrailingZeroCount(0x8000_0000_0000_0000ul >> shift).Should().Be(sizeBits - 1 - shift);
+            BitOperations.TrailingZeroCount(ulong.MaxValue << shift).Should().Be(shift);
+        }
+    }
+
+    [Fact]
+    public void TrailingZeroCountTargeted()
+    {
+        BitOperations.TrailingZeroCount(0u).Should().Be(32);
+        BitOperations.TrailingZeroCount(0x8000_0000u).Should().Be(31);
+        BitOperations.TrailingZeroCount(uint.MaxValue).Should().Be(0);
+
+        BitOperations.TrailingZeroCount(0ul).Should().Be(64);
+        BitOperations.TrailingZeroCount(0x8000_0000_0000_0000ul).Should().Be(63);
+        BitOperations.TrailingZeroCount(ulong.MaxValue).Should().Be(0);
+    }
+
+    [Fact]
     public void PopCountUint()
     {
         int sizeBits = sizeof(uint) * 8;
